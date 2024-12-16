@@ -1,0 +1,75 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: InsuranceFactory
+    network: arbitrum-sepolia
+    source:
+      address: "0xe28D3e3AF267477232D003c8ca36e85477b3A431"
+      abi: InsuranceFactory
+      startBlock: 101984495
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - InsurancePoolCreated
+      abis:
+        - name: InsuranceFactory
+          file: ./abis/InsuranceFactory.json
+      eventHandlers:
+        - event: InsurancePoolCreated(indexed address,indexed address,string,string,string,string,string,string,string,string,string,string,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleInsurancePoolCreated
+      file: ./src/insurance-factory.ts
+templates:
+  - kind: ethereum
+    name: InsurancePool
+    network: arbitrum-sepolia
+    source:
+      abi: InsurancePool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ClaimApproved
+        - ClaimRejected
+        - ClaimSubmitted
+        - Deposit
+        - PolicyPurchased
+        - Stake
+        - Transfer
+        - TransferInsurer
+        - Withdraw
+        - YieldUpdated
+      abis:
+        - name: InsurancePool
+          file: ./abis/InsurancePool.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: ClaimApproved(indexed uint256,(address,uint256,uint256,string,bool))
+          handler: handleClaimApproved
+        - event: ClaimRejected(indexed uint256,(address,uint256,uint256,string,bool))
+          handler: handleClaimRejected
+        - event: ClaimSubmitted(uint32,(address,uint256,uint256,string,bool))
+          handler: handleClaimSubmitted
+        - event: Deposit(indexed address,uint256)
+          handler: handleDeposit
+        - event: PolicyPurchased(indexed address,uint256)
+          handler: handlePolicyPurchased
+        - event: Stake(uint256)
+          handler: handleStake
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: TransferInsurer(indexed address,indexed address)
+          handler: handleTransferInsurer
+        - event: Withdraw(uint256)
+          handler: handleWithdraw
+        - event: YieldUpdated(uint256,uint256)
+          handler: handleYieldUpdated
+      file: ./src/insurance-pool.ts

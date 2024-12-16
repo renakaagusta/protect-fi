@@ -1,0 +1,8 @@
+{
+  "arbitrum-sepolia": {
+    "InsuranceFactory": {
+      "address": "0x99CFB199C0EAFEe3457224C75a079C86025eae22",
+      "startBlock": 101984495
+    }
+  }
+}
